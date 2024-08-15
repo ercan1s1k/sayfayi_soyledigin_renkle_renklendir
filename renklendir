@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renk Değiştirme</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            transition: background-color 0.5s;
+        }
+        .container {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Renk Adını Söyleyin</h1>
+        <button onclick="startRecognition()">Mikrofonu Başlat</button>
+    </div>
+
+    <script>
+        const validColors = [
+            'kırmızı', 'mavi', 'yeşil', 'sarı', 'turuncu', 'mor', 'pembe', 
+            'kahverengi', 'siyah', 'beyaz', 'gri', 'lacivert', 'açık mavi', 
+            'koyu yeşil', 'altın', 'gümüş', 'bej', 'bordo', 'fuşya', 'turkuaz',
+            'açık yeşil', 'koyu mavi', 'açık sarı', 'koyu kırmızı', 'açık pembe',
+            'koyu mor', 'açık kahverengi', 'koyu gri', 'açık gri', 'zeytin yeşili',
+            'şeftali', 'lavanta', 'mint yeşili', 'krem', 'şarap rengi', 'hardal',
+            'koyu turuncu', 'açık turuncu', 'koyu pembe', 'açık mor', 'koyu sarı'
+        ];
+
+        function startRecognition() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'tr-TR';
+            recognition.start();
+
+            recognition.onresult = function(event) {
+                const color = event.results[0][0].transcript.toLowerCase();
+                if (validColors.includes(color)) {
+                    document.body.style.backgroundColor = color;
+                } else {
+                    alert('Geçersiz renk adı. Lütfen başka bir renk söyleyin.');
+                }
+            };
+
+            recognition.onerror = function(event) {
+                console.error('Hata:', event.error);
+            };
+        }
+    </script>
+</body>
+</html>
